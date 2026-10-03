@@ -1,0 +1,30 @@
+{
+  "python": "3.12.14",
+  "packages": {
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "catboost": "1.2.10",
+    "matplotlib": "3.11.2"
+  },
+  "training_rows": 48000,
+  "training_date_min": "2025-01-01",
+  "training_date_max": "2025-10-31",
+  "training_sha256": "892980fd20bac7ac0ca4ec31d3981fca48d52dec88e4f02642ab955f1efb40fe",
+  "selection_sha256": "ba3af2a33f7b11e77a200ed670510dc4d4c2b1335a165da53137301e44c69dd9",
+  "selection": {
+    "main_model": "no_quote",
+    "december_model": "core",
+    "criterion": "Mean total-dollar MAE across the May-June and July-August windows",
+    "iterations": 700,
+    "seed": 42,
+    "threads": 4,
+    "selection_mean_mae": {
+      "no_quote": 115.37602472668998,
+      "full": 126.63365450507655,
+      "core": 138.31090048170086,
+      "baseline": 169.69933275743915
+    },
+    "holdout_start": "2025-09-01",
+    "holdout_end_exclusive": "2025-11-01"
+  }
+}
