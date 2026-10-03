@@ -1,0 +1,3 @@
+-r assessment/requirements.txt
+catboost>=1.2.8,<2
+pytest>=8,<10
