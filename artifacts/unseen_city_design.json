@@ -1,0 +1,15 @@
+{
+  "withheld_cities": [
+    "Albany",
+    "Charleston",
+    "Grand Rapids",
+    "Little Rock",
+    "New York",
+    "Savannah"
+  ],
+  "training_end_exclusive": "2025-07-01",
+  "evaluation_start": "2025-07-01",
+  "evaluation_end_exclusive": "2025-09-01",
+  "purpose": "Diagnostic only; does not change the frozen model selection",
+  "limitation": "Known-data city holdout approximates, but cannot verify, performance on the eight actual new cities."
+}
