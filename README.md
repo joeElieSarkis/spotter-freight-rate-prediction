@@ -72,7 +72,7 @@ The supplied CSVs are retained under `data/` so a reviewer can reproduce the wor
 .venv\Scripts\python -m pip check
 ```
 
-GitHub Actions runs the tests and the supplied prediction-file validator on pushes and pull requests. It does not retrain models or claim an accuracy score for Spotter's hidden labels. The tests cover time boundaries, invalid inputs, training-only preprocessing, unfamiliar categories, saved-model round trips, and matching predictions to load IDs. Test temporary files are kept under `work/`.
+GitHub Actions runs the tests and the supplied prediction-file validator on pushes and pull requests. It does not retrain models or claim an accuracy score for Spotter's hidden labels. The tests cover time boundaries, invalid inputs, training-only preprocessing, unfamiliar categories, saved-model round trips, and matching predictions to load IDs. Test caches use `work/`; temporary test fixtures use the ignored `.pytest_tmp/` directory, which pytest can create in a fresh checkout.
 
 ## Validation plan
 
