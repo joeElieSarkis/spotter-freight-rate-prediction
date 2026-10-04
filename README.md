@@ -52,6 +52,8 @@ To inspect or rerun a particular stage:
 
 The report and Loom walkthrough are separate submission items.
 
+![Fixed December scenario predictions](scorer_results/candidate_december.png)
+
 ## Files
 
 - `assessment/`: original instructions and scorer requirements.
@@ -60,6 +62,17 @@ The report and Loom walkthrough are separate submission items.
 - `freight/`: data checks, features, training, and prediction code.
 - `tests/`: checks for the data and prediction contracts.
 - `artifacts/`: reproducible audit and evaluation results.
+
+The supplied CSVs are retained under `data/` so a reviewer can reproduce the work. Local environments, model binaries, caches, and temporary helper scripts are excluded from Git. There is only one working copy of the supplied training CSV.
+
+## Checks
+
+```powershell
+.venv\Scripts\python -m pytest -q
+.venv\Scripts\python -m pip check
+```
+
+GitHub Actions runs the tests and the supplied prediction-file validator on pushes and pull requests. It does not retrain models or claim an accuracy score for Spotter's hidden labels. The tests cover time boundaries, invalid inputs, training-only preprocessing, unfamiliar categories, saved-model round trips, and matching predictions to load IDs. Test temporary files are kept under `work/`.
 
 ## Validation plan
 

@@ -7,5 +7,9 @@ models/
 catboost_info/
 .DS_Store
 Thumbs.db
-# Original download kept locally while another application has it open.
+.env
+.env.*
+*.pem
+*.key
+# Keep one canonical copy of the supplied training data under data/.
 /train-test.csv
