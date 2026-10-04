@@ -1,0 +1,18 @@
+{
+  "purpose": "Follow-up algorithm comparison; does not alter the original selection or predictions",
+  "timing": "Added after the initial September-October holdout results were inspected",
+  "evaluation": "Original May-June and July-August windows only; no holdout score is claimed",
+  "feature_set": "no_quote, the same inputs as the selected CatBoost model",
+  "preprocessing": "Training-only city lookup, numeric median imputation and standardization, categorical one-hot encoding with unknown categories ignored",
+  "alpha": 10.0,
+  "solver": "lsqr",
+  "tol": 1e-06,
+  "max_iter": 10000,
+  "target": "posted_rate / distance",
+  "sample_weight": "distance squared, normalized to mean 1",
+  "objective": "Squared total-dollar error plus L2 coefficient penalty; unlike CatBoost's MAE objective",
+  "target_handling": "All evaluation targets retained; no target clipping or outlier removal",
+  "mean_mae": 149.4354207846926,
+  "sklearn_version": "1.9.1",
+  "training_sha256": "892980fd20bac7ac0ca4ec31d3981fca48d52dec88e4f02642ab955f1efb40fe"
+}

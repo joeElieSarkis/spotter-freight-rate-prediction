@@ -8,12 +8,12 @@ Use Python 3.12. From this folder on Windows:
 
 ```powershell
 python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python -m pip install -r requirements-lock.txt
 ```
 
 On macOS/Linux, replace `.venv\Scripts\python` with `.venv/bin/python`.
 
-For the exact package versions used for the saved results, install `requirements-lock.txt` instead. All model fitting runs on the CPU.
+`requirements-lock.txt` pins the tested package versions. `requirements.txt` lists the permitted dependency ranges. All model fitting runs on the CPU.
 
 ## Run
 
@@ -21,7 +21,7 @@ For the exact package versions used for the saved results, install `requirements
 .venv\Scripts\python run.py
 ```
 
-This runs the tests, audits the data, selects models, evaluates the frozen choice, checks unseen-city behavior, trains on all labeled rows, exports both prediction files, and runs the supplied scorer. It uses four CPU threads by default; change this with `--threads 2` if needed.
+This runs the tests, audits the data, selects models, evaluates the frozen choice, checks unseen-city behavior, reproduces the follow-up Ridge benchmark, trains on all labeled rows, exports both prediction files, and runs the supplied scorer. It uses four CPU threads by default; change this with `--threads 2` if needed.
 
 To inspect or rerun a particular stage:
 
@@ -30,6 +30,7 @@ To inspect or rerun a particular stage:
 .venv\Scripts\python -m freight.experiment select
 .venv\Scripts\python -m freight.experiment evaluate
 .venv\Scripts\python -m freight.experiment stress
+.venv\Scripts\python -m freight.benchmark
 .venv\Scripts\python -m freight.train
 .venv\Scripts\python -m freight.predict
 .venv\Scripts\python score.py --predictions validation_predictions.csv --december-predictions december_predictions.csv
@@ -45,6 +46,7 @@ To inspect or rerun a particular stage:
 - `artifacts/selection_metrics.csv`: both forward validation windows for every candidate.
 - `artifacts/holdout_metrics.csv` and `holdout_slices.csv`: final local results and error breakdowns.
 - `artifacts/unseen_city_metrics.csv`: the separate city exclusion stress test.
+- `artifacts/ridge_benchmark.csv` and `ridge_benchmark.json`: follow-up linear-model results and the fixed experiment design.
 - `artifacts/training_manifest.json`: data hashes, versions, dates, and training parameters.
 - `models/`: saved CatBoost models and feature metadata. This generated folder is ignored by Git; `freight.train` recreates it.
 
@@ -123,6 +125,20 @@ Features include directed lanes, equipment, distance, inverse distance, weight, 
 - `quote_signal` switches between positive and negative relationships with rate per mile across months, with almost no relationship in August. Its creation time and meaning are unspecified. The ablation checks whether it remains useful when predicting later months.
 - Coordinates are internally consistent for each training city. They are used as supplied, without external geocoding or assumptions that city names identify real coordinates.
 - Unusually high and low target rates are flagged in the audit, but are not deleted or clipped. The robust objective reduces their training influence while evaluation still counts their full errors.
+
+## Follow-up linear benchmark
+
+A Ridge regression comparison was added after the original holdout results had been inspected. It uses only the original May-June and July-August selection windows. It does not replace the frozen model selection, alter the submission predictions, or claim a new blind holdout result.
+
+| Method | May-June MAE | July-August MAE | Mean MAE |
+| --- | ---: | ---: | ---: |
+| Equipment/distance baseline | $197.93 | $141.47 | $169.70 |
+| Selected CatBoost, no quote signal | $119.30 | $111.45 | $115.38 |
+| Ridge, same input features | $118.82 | $180.05 | $149.44 |
+
+Ridge is competitive in the first window but performs worse in the second. This fixed comparison supports keeping CatBoost; it does not establish that every possible linear model or parameter choice would perform worse.
+
+The Ridge benchmark uses the same `no_quote` feature set. Median imputation, numeric standardization, and one-hot category encoding are fitted within each training window. Unfamiliar categories are ignored by the encoder. The fixed settings are `alpha=10`, the `lsqr` solver, tolerance `1e-6`, and a maximum of 10,000 iterations; there is no parameter search. The target is rate per mile, with distance-squared weights normalized to mean one, making the data-fit term proportional to squared total-dollar error. Ridge's squared-error objective differs from CatBoost's MAE objective. All targets remain in the evaluation. See the [Ridge documentation](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html) for the estimator's objective.
 
 ## Limits
 

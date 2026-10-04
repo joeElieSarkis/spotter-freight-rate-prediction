@@ -19,6 +19,7 @@ def main():
         ["-m", "freight.experiment", "select", "--threads", str(args.threads)],
         ["-m", "freight.experiment", "evaluate"],
         ["-m", "freight.experiment", "stress"],
+        ["-m", "freight.benchmark"],
         ["-m", "freight.train"],
         ["-m", "freight.predict"],
         ["score.py", "--predictions", "validation_predictions.csv", "--december-predictions", "december_predictions.csv"],

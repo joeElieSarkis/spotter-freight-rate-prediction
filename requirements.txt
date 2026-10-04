@@ -1,3 +1,4 @@
 -r assessment/requirements.txt
 catboost>=1.2.8,<2
 pytest>=8,<10
+scikit-learn>=1.5,<2
