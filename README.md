@@ -2,6 +2,10 @@
 
 Predict the total posted rate in dollars for the 12,000 November-December loads supplied in the assessment.
 
+## Assessment report
+
+Read the [four-page report](reports/Spotter_Freight_Rate_Report.pdf) for the data quality findings, validation design, model comparisons, error analysis, and required December chart. An [editable text version](reports/assessment_report.md) is also included.
+
 ## Setup
 
 Use Python 3.12. From this folder on Windows:
@@ -50,7 +54,7 @@ To inspect or rerun a particular stage:
 - `artifacts/training_manifest.json`: data hashes, versions, dates, and training parameters.
 - `models/`: saved CatBoost models and feature metadata. This generated folder is ignored by Git; `freight.train` recreates it.
 
-The report and Loom walkthrough are separate submission items.
+The PDF report is included under `reports/`. The Loom walkthrough is a separate submission item.
 
 ![Fixed December scenario predictions](scorer_results/candidate_december.png)
 
@@ -62,6 +66,7 @@ The report and Loom walkthrough are separate submission items.
 - `freight/`: data checks, features, training, and prediction code.
 - `tests/`: checks for the data and prediction contracts.
 - `artifacts/`: reproducible audit and evaluation results.
+- `reports/`: assessment report in PDF and editable Markdown formats.
 
 The supplied CSVs are retained under `data/` so a reviewer can reproduce the work. Local environments, model binaries, caches, and temporary helper scripts are excluded from Git. There is only one working copy of the supplied training CSV.
 
